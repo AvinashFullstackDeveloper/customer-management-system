@@ -1,0 +1,126 @@
+<div class="container-fluid g-0">
+
+  <!-- header -->
+  <app-header></app-header>
+
+  <!-- main content -->
+  <main class="">
+    <!-- toolbar to add and search customers -->
+    <div class="toolbar">
+
+      <div class="add-customer">
+        <button type="button" class="btn btn-outline-success btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal" #addCustomerButton>Add Customer</button>
+      </div>
+
+      <div class="search-customers">
+        <input type="search" class="form-control" placeholder="Search Customers"
+        (input)="searchCustomer(searchInput.value)" #searchInput>
+      </div>
+
+    </div>
+
+    <!-- area to display all the customers -->
+    <div class="customers">
+
+      <div class="row mt-5" *ngIf="customers.length == 0">
+        <div class="col text-center">
+          <span class="text-secondary fs-2 fw-bold fst-italic"> There are No customer Added!</span>
+        </div>
+      </div>
+
+      <div class="row mt-4" *ngFor="let customer of customersToDisplay; let ci = index;">
+        <div class="col">
+          <app-customer [customer]="customer" (onRemoveCustomer)="removeCustomer($event)"
+          (onEditCustomer)="editCustomer($event)"></app-customer>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enter Customer information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="customerForm">
+          <!-- Title and First Name -->
+          <div class="row mt-4  ">
+            <div class="col">
+              <select class="form-select" formControlName="title">
+                <option value="default" selected>Select Title</option>
+                <option *ngFor="let option of salutations; let i=index" value="{{i}}">
+                  {{option | titlecase}}
+                </option>
+              </select>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" formControlName="firstname" placeholder="First Name">
+            </div>
+          </div>
+
+          <!-- Last name and Email -->
+          <div class="row mt-5">
+            <div class="col">
+              <input type="text" class="form-control" formControlName="lastname" placeholder="Last Name">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" formControlName="email" placeholder="Email">
+            </div>
+          </div>
+
+          <!-- Contact Number and Company Name -->
+          <div class="row mt-5">
+            <div class="col">
+              <input type="text" class="form-control" formControlName="contactnumber" placeholder="Contact Number">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" formControlName="companyname" placeholder="Company Name">
+            </div>
+          </div>
+
+          <!-- Street and pincode -->
+          <div class="row mt-5">
+            <div class="col">
+              <input type="text" class="form-control" formControlName="street" placeholder="Street">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" formControlName="pincode" placeholder="Pincode">
+            </div>
+          </div>
+
+          <!-- City and Country -->
+          <div class="row mt-5 mb-4">
+            <div class="col">
+              <select class="form-select" formControlName="city">
+                <option value="default" selected>Select your City</option>
+                <option *ngFor="let option of cityOptions; let i=index" value="{{i}}">
+                  {{option | titlecase}}
+                </option>
+              </select>
+            </div>
+            <div class="col">
+              <select class="form-select" formControlName="country">
+                <option value="default" selected>Select your Country</option>
+                <option *ngFor="let option of countryOptions; let i=index" value="{{i}}">
+                  {{option | titlecase}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+        </form>
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addCustomer()">Insert</button>
+      </div>
+    </div>
+  </div>
+</div>
